@@ -6,7 +6,6 @@ output: html_document
 ---
 
 ```{r}
-#Loading libraries
 library(tidyverse)
 library(rtweet)
 library(tidytext)
@@ -20,14 +19,53 @@ library(wordcloud2)
 library(RColorBrewer)
 library(textrecipes)
 library(tidymodels)
-install.packages("formattable")
 library(formattable)
 library(broom)
 library(ranger)
-install.packages("yardstick")
 library(yardstick)
 ```
 
+```{r}
+remote_working_tweets<-read_csv("final_remote_working.csv")
+
+```
+
+```{r}
+#adjusting time stamp
+remote_working_tweets<-
+  remote_working_tweets%>%
+  mutate(
+    timestamp=ymd_hms(created_at),
+    day_of_week=wday(timestamp),
+    id=as_factor(row_number())
+  )
+```
+
+```{r}
+# cleaning data
+remove_reg <- "&amp;|&lt;|&gt;|\\d+\\w*\\d*|#\\w+|[^\x01-\x7F]|[[:punct:]]|https\\S*"
+# &amp = @
+# &lt;= <
+# &gt; >
+
+
+tidy_tweets <- remote_working_tweets %>% 
+  filter(!str_detect(text, "^RT")) %>%
+  mutate(text = str_remove_all(text, remove_reg)) 
+
+
+tidy_tweets<-tidy_tweets%>%
+  unnest_tokens(word, text, token = "tweets") 
+
+tidy_tweets<-tidy_tweets%>%
+  filter(
+    str_detect(word, "[a-z]")
+  )%>%
+  anti_join((stop_words))
+
+head(tidy_tweets$word)
+
+```
 
 ```{r}
 tidy_tweets%>%
