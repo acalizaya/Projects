@@ -1,0 +1,112 @@
+---
+title: "Sentiment_analysis"
+author: "Antoneely Calizaya"
+date: "12/6/2021"
+output: html_document
+---
+
+```{r}
+#Loading libraries
+library(tidyverse)
+library(rtweet)
+library(tidytext)
+library(lubridate)
+library(knitr)
+library(emo)
+library(topicmodels)
+library(tm)
+library(wordcloud)
+library(wordcloud2)
+library(RColorBrewer)
+library(textrecipes)
+library(tidymodels)
+install.packages("formattable")
+library(formattable)
+library(broom)
+library(ranger)
+install.packages("yardstick")
+library(yardstick)
+```
+
+
+```{r}
+tidy_tweets%>%
+  filter(word != "remote working")%>%
+  count(word)%>%
+  top_n(20)%>%
+  arrange(desc(n))
+```
+```{r}
+#wordcloud
+tidy_tweets%>%
+  filter(word != "bitcoin")%>%
+  with(wordcloud(words = word, max.words = 100))
+```
+
+
+```{r}
+#most retweeted tweets
+remote_working_tweets %>% 
+  arrange(-retweet_count) %>%
+  select(created_at, screen_name, text, retweet_count)%>%
+  top_n(20)
+```
+
+```{r}
+#sentiment libraries
+afinn<-get_sentiments("afinn")
+bing<-get_sentiments("bing")
+nrc<-get_sentiments("nrc")
+```
+```{r}
+#bing sentiment analysis
+#joining bing library to data
+sentiment_tidy_tweets <- tidy_tweets%>%
+  inner_join(nrc)
+sentiment_tidy_tweets%>%head()
+#adding a data coloumn bassed on timestamp
+sentiment_tidy_tweets<-sentiment_tidy_tweets%>%
+  mutate(date = date(timestamp))
+```
+
+```{r}
+selected_tweets_tidy<-tidy_tweets%>%select(timestamp, day_of_week, location, word, user_id)
+
+selected_tweets_tidy<-selected_tweets_tidy%>%
+  inner_join(bing)%>%
+  rename(sentiment_bing=sentiment)%>%
+  inner_join(nrc)%>%
+  rename(sentiment_nrc=sentiment)
+
+
+selected_tweets_tidy%>%
+  count(sentiment_nrc, sort=TRUE)
+
+
+```
+
+```{r}
+#counting positive and negative words by date
+sentiment_tidy_tweets%>%
+  group_by(date)%>%
+  count(sentiment)%>%
+  ungroup()
+```
+```{r}
+#visualise counts of positve and negative words over timeperiod
+sentiment_tidy_tweets%>%
+  ggplot(aes(date, fill = sentiment))+
+  geom_bar()
+```
+```{r}
+#count of word
+sentiment_tidy_tweets%>%
+  count(word)%>%
+  arrange(desc(n))
+
+#count by sentiment
+sentiment_tidy_tweets%>%
+  group_by(sentiment)%>%
+  summarise(avg_retweet_by_sentiment = mean(retweet_count),n=n())%>%
+  arrange(desc(avg_retweet_by_sentiment))
+```
