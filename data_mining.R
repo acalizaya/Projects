@@ -79,11 +79,64 @@ afinn<-get_sentiments("afinn")
 bing<-get_sentiments("bing")
 nrc<-get_sentiments("nrc")
 
-word.ve<-as.vector(tidy_tweets)
+#trimming dataset
+trimmed_tweets <- tidy_tweets%>%
+  select(text)
+
+head(trimmed_tweets)
+
+head(tidy_tweets$text)
+
+#removing hashtags, urls, special character
+tweets.ve <- gsub("http.*","",tidy_tweets$text)
+
+tweets.ve <- gsub("https.*","",tweets.ve)
+
+tweets.ve <- gsub("#.*","",tweets.ve)
+
+tweets.ve <- gsub("@.*","",tweets.ve)
+
+head(tweets.ve)
+
+
+#get sentiment for each tweet
+word.ve<-as.vector(tweets.ve)
 
 emotion.ve <- get_nrc_sentiment(word.ve)
-  get_nrc_sentiment(word.ve)
-emotion.ve2<-cbind(tidy_tweets,emotion.ve)
+
+emotion.ve2<-cbind(tweets.ve,emotion.ve)
+
+head(emotion.ve2)
+
+#sentiment score
+
+sent.value <- get_sentiment(word.ve)
+most.positive <- word.ve[sent.value == max(sent.value)]
+most.positive
+
+most.negative <- word.ve[sent.value <= min(sent.value)]
+most.negative
+
+positive.tweets <- word.ve[sent.value >0]
+head(positive.tweets)
+
+negative.tweets <- word.ve[sent.value <0]>
+head(negative.tweets)
+
+neutral.tweets <- word.ve[sent.value==0]>
+  
+  
+category_senti <- ifelse(sent.value < 0, "Negative", ifelse(sent.value > 0,"Positive", "Neutral"))  
+head(category_senti)
+
+category_senti2 <- cbind(tidy_tweets$text,category_senti)
+head(category_senti2)
+
+table(category_senti)
+category_sentiment.df <- as.data.frame(category_senti2)
+category_sentiment.df%>%write_csv("category_sentiment_ve.csv")
+emotion.ve2%>%write_csv("emotions_ve.csv")
 
 
-
+category_senti2<-category_senti2%>%flatten()
+category_senti2%>%write_csv("category_sentiment_ve.csv")
