@@ -1,0 +1,63 @@
+---
+title: "Visualisations_virtua_events"
+author: "Antoneely Calizaya"
+date: "31/12/2021"
+output: pdf_document
+---
+
+```{r}
+#Loading libraries
+library(tidyverse)
+library(rtweet)
+library(tidytext)
+library(lubridate)
+library(knitr)
+library(emo)
+library(topicmodels)
+library(tm)
+library(wordcloud)
+library(wordcloud2)
+library(RColorBrewer)
+library(textrecipes)
+library(tidymodels)
+install.packages("formattable")
+library(formattable)
+library(broom)
+library(ranger)
+install.packages("yardstick")
+library(yardstick)
+```
+```{r}
+ve_tweets <- read_csv("category_senti_ve_4.csv")
+```
+
+
+```{r}
+#most retweeted tweets
+ve_tweets %>% 
+  arrange(-`tidy_tweets$retweet_count`) %>%
+  select(`tidy_tweets$text` ,`tidy_tweets$retweet_count`)%>%
+  top_n(20)
+```
+
+```{r}
+#most liked tweets
+ve_tweets %>% 
+  arrange(-`tidy_tweets$favourites_count`) %>%
+  top_n(15, `tidy_tweets$favourites_count`) %>% 
+  select(`tidy_tweets$text`, `tidy_tweets$favourites_count`)
+```
+```{r}
+#Top hashtags
+ve_tweets%>% 
+  unnest_tokens(`tidy_tweets$hashtags` ,`tidy_tweets$text`, to_lower = FALSE) %>%
+  filter(str_detect(`tidy_tweets$hashtags`, "^#")) %>%
+  count(`tidy_tweets$hashtags`, sort = TRUE) %>%
+  top_n(20)
+```
+
+#top tweeting locations
+trimmed_tweets%>% 
+  filter(!is.na(place_full_name)) %>%
+  count(place_full_name, sort = TRUE)%>%
+  top_n(10)

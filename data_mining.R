@@ -140,3 +140,19 @@ emotion.ve2%>%write_csv("emotions_ve.csv")
 
 category_senti2<-category_senti2%>%flatten()
 category_senti2%>%write_csv("category_sentiment_ve.csv")
+
+
+trimmed_tweets <- tidy_tweets %>%
+  select(user_id,status_id,created_at,text,screen_name,source,display_text_width,
+         favourites_count,retweet_count,reply_count,hashtags,place_name,
+         place_full_name,place_type,country,location,description,followers_count,
+         friends_count,listed_count,statuses_count,favourites_count, account_created_at,
+         verified,timestamp)
+trimmed_tweets%>%
+  head()
+
+#top tweeting locations
+trimmed_tweets%>% 
+  filter(!is.na(place_full_name)) %>%
+  count(place_full_name, sort = TRUE)%>%
+  top_n(10)
