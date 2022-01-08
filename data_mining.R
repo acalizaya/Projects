@@ -47,43 +47,41 @@ data<-search_tweets(
 data<-data%>%flatten()
 
 
-data%>%write_csv("27_12_21_virtual_events.csv")
-
 #merging and opening all csv files
 files<-list.files(pattern="\\.csv$",full.names = TRUE) #read files names with csv
-all_data<-map_df(files, ~read_csv(.x)) #open and merge
+all_data1<-map_df(files, ~read_csv(.x)) #open and merge
 
 #duplicate entries
-final_data<-data%>%distinct()
-final_data%>%write_csv("final_virtual_events.csv")
+final_data<-all_data1%>%distinct()
+final_data%>%write_csv("final_ve.csv")
 
-virtual_events_tweets<-read_csv("final_virtual_events.csv")
+tweets<-read_csv("final_ve.csv")
 
-virtual_events_tweets<-
-  virtual_events_tweets%>%
+tweets<-
+  ve_tweets%>%
   mutate(
     timestamp=ymd_hms(created_at),
     day_of_week=wday(timestamp),
     id=as_factor(row_number())
   )
 
-#removing hashtags, urls, special characters
+####removing hashtags, urls, special characters
 remove_reg <- "&amp;|&lt;|&gt;|\\d+\\w*\\d*|#\\w+|[^\x01-\x7F]|[[:punct:]]|https\\S*"
 
-tidy_tweets <- virtual_events_tweets %>% 
+tidy_tweets <- tweets %>% 
   filter(!str_detect(text, "^RT")) %>%
   mutate(text = str_remove_all(text, remove_reg))
 
-#sentiment libraries
-afinn<-get_sentiments("afinn")
-bing<-get_sentiments("bing")
-nrc<-get_sentiments("nrc")
+####sentiment libraries
+#afinn<-get_sentiments("afinn")
+#bing<-get_sentiments("bing")
+#nrc<-get_sentiments("nrc")
 
 #trimming dataset
-trimmed_tweets <- tidy_tweets%>%
+ve_tweets <- tidy_tweets%>%
   select(text)
 
-head(trimmed_tweets)
+head(ve_tweets)
 
 head(tidy_tweets$text)
 
@@ -129,27 +127,40 @@ neutral.tweets <- word.ve[sent.value==0]>
 category_senti <- ifelse(sent.value < 0, "Negative", ifelse(sent.value > 0,"Positive", "Neutral"))  
 head(category_senti)
 
-category_senti2 <- cbind(tidy_tweets$text,category_senti)
-head(category_senti2)
+#category_senti2 <- cbind(tidy_tweets$hashtags,tidy_tweets$text,category_senti)
+#head(category_senti2)
 
-table(category_senti)
-category_sentiment.df <- as.data.frame(category_senti2)
-category_sentiment.df%>%write_csv("category_sentiment_ve.csv")
-emotion.ve2%>%write_csv("emotions_ve.csv")
+category_senti4 <- cbind(tidy_tweets$created_at,tidy_tweets$text,tidy_tweets$retweet_count,tidy_tweets$favourites_count,tidy_tweets$hashtags,category_senti,emotion.ve2)
+head(category_senti4)
 
-
-category_senti2<-category_senti2%>%flatten()
-category_senti2%>%write_csv("category_sentiment_ve.csv")
-
-
-trimmed_tweets <- tidy_tweets %>%
-  select(user_id,status_id,created_at,text,screen_name,source,display_text_width,
-         favourites_count,retweet_count,reply_count,hashtags,place_name,
-         place_full_name,place_type,country,location,description,followers_count,
-         friends_count,listed_count,statuses_count,favourites_count, account_created_at,
-         verified,timestamp)
-trimmed_tweets%>%
+tidy_senti4 <- category_senti4 %>%
+  select(`tidy_tweets$created_at`,`tidy_tweets$text`,`tidy_tweets$retweet_count`,`tidy_tweets$favourites_count`,`tidy_tweets$hashtags`,category_senti,anger,anticipation,disgust,fear,joy,sadness, surprise, trust,negative,positive)
+tidy_senti4%>%
   head()
+
+category_senti.df <- as.data.frame(tidy_senti4)
+category_senti.df%>%write_csv("category_senti_ve.csv")
+
+  
+
+#table(category_senti)
+#category_sentiment.df <- as.data.frame(category_senti2)
+#category_sentiment.df%>%write_csv("category_sentiment_ve.csv")
+#emotion.ve2%>%write_csv("emotions_ve.csv")
+
+
+#category_senti2<-category_senti2%>%flatten()
+#category_senti2%>%write_csv("category_sentiment_ve.csv")
+
+
+#trimmed_tweets <- tidy_tweets %>%
+  #select(user_id,status_id,created_at,text,screen_name,source,display_text_width,
+         #favourites_count,retweet_count,reply_count,hashtags,place_name,
+         #place_full_name,place_type,country,location,description,followers_count,
+         #friends_count,listed_count,statuses_count,favourites_count, account_created_at,
+         #verified,timestamp)
+#trimmed_tweets%>%
+  #head()
 
 #top tweeting locations
 trimmed_tweets%>% 
