@@ -17,15 +17,12 @@ install.packages("syuzhet")
 
 library(tidyverse)
 library(rtweet)
-
 library(tidytext)
 library(lubridate)
 library(textdata)
-
 library(RColorBrewer)
 library(wordcloud)
 library(wordcloud2)
-
 library(topicmodels)
 library(tm)
 library(textrecipes)
@@ -130,15 +127,24 @@ head(category_senti)
 #category_senti2 <- cbind(tidy_tweets$hashtags,tidy_tweets$text,category_senti)
 #head(category_senti2)
 
-category_senti4 <- cbind(tidy_tweets$created_at,tidy_tweets$text,tidy_tweets$retweet_count,tidy_tweets$favourites_count,tidy_tweets$hashtags,category_senti,emotion.ve2)
+category_senti4 <- cbind(tidy_tweets$created_at,tidy_tweets$text,tidy_tweets$retweet_count,tidy_tweets$favourites_count,tidy_tweets$hashtags,tidy_tweets$media_expanded_url,category_senti,emotion.ve2)
 head(category_senti4)
 
 tidy_senti4 <- category_senti4 %>%
-  select(`tidy_tweets$created_at`,`tidy_tweets$text`,`tidy_tweets$retweet_count`,`tidy_tweets$favourites_count`,`tidy_tweets$hashtags`,category_senti,anger,anticipation,disgust,fear,joy,sadness, surprise, trust,negative,positive)
+  select(`tidy_tweets$created_at`,`tidy_tweets$text`,`tidy_tweets$retweet_count`,`tidy_tweets$favourites_count`,`tidy_tweets$hashtags`,`tidy_tweets$media_expanded_url`,`tweets.ve`,category_senti,anger,anticipation,disgust,fear,joy,sadness, surprise, trust,negative,positive)
 tidy_senti4%>%
   head()
 
 category_senti.df <- as.data.frame(tidy_senti4)
+
+names(category_senti.df)[1]<- 'created_at'
+names(category_senti.df)[2]<- 'text'
+names(category_senti.df)[3]<- 'retweet_count'
+names(category_senti.df)[4]<- 'favourites_count'
+names(category_senti.df)[5]<- 'hashtags'
+names(category_senti.df)[6]<- 'url'
+
+
 category_senti.df%>%write_csv("category_senti_ve.csv")
 
   
@@ -161,9 +167,3 @@ category_senti.df%>%write_csv("category_senti_ve.csv")
          #verified,timestamp)
 #trimmed_tweets%>%
   #head()
-
-#top tweeting locations
-trimmed_tweets%>% 
-  filter(!is.na(place_full_name)) %>%
-  count(place_full_name, sort = TRUE)%>%
-  top_n(10)

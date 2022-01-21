@@ -1,0 +1,151 @@
+---
+title: "topic_modeling"
+author: "Antoneely Calizaya"
+date: "09/01/2022"
+output: html_document
+---
+```{r}
+install.packages("SnowballC")
+install.packages("reshape2")
+
+library(SnowballC)
+library(tidytext)
+library(tidyverse)
+library(lubridate)
+library(textdata)
+library(RColorBrewer)
+library(wordcloud)
+library(wordcloud2)
+library(topicmodels)
+library(tm)
+library(reshape2)
+```
+
+```{r}
+ve_tweets <- read_csv("category_senti_ve.csv")
+```
+
+```{r}
+remove_reg <- "&amp;|&lt;|&gt;|\\d+\\w*\\d*|#\\w+|[^\x01-\x7F]|[[:punct:]]|https\\S*"
+```
+
+```{r}
+#removing retweets characters
+tidy_tweets <- ve_tweets %>% 
+  filter(!str_detect(text, "^RT")) %>%
+  mutate(text = str_remove_all(text, remove_reg))
+```
+
+```{r}
+#unnesting tweets 
+tidy_tweets<-tidy_tweets%>%
+  unnest_tokens(word, text, token = "tweets")
+```
+
+```{r}
+# Remove mentions, urls, emojis, numbers, punctuations, etc.
+tidy_tweets<-tidy_tweets%>%
+  filter(
+    str_detect(word, "[a-z]")#keep only character-words
+  )%>%
+  anti_join((stop_words))
+```
+#topic modeling
+
+```{r}
+#create a document term frequency based on how often words are
+tweets_dtm<-tidy_tweets%>%
+  count(created_at, word)%>%
+  cast_dtm( #converts our data to a special object for R = document term frequency matrix
+    document=created_at,
+    term=word,
+    value=n,
+    weighting=tm::weightTf
+    )
+tweets_dtm
+```
+
+```{r}
+tweets_dtm_trim<-tm::removeSparseTerms(tweets_dtm, sparse=.99)
+rowTotals <- apply(tweets_dtm_trim, 1, sum) #Find the sum of words in each Document
+tweets_dtm_trim <- tweets_dtm_trim[rowTotals> 0, ] 
+tweets_dtm_trim
+```
+
+```{r}
+#lets try with 5 topics (K=5)
+tweets_lda<-LDA(tweets_dtm_trim, k=5, control=list(seed=1234))
+tweet_topics<-tidy(tweets_lda, matrix="beta")
+```
+
+```{r}
+#let's look at them with 10 top words for each topic
+tweet_top_terms <- tweet_topics %>%
+  group_by(topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+```
+
+```{r}
+#create csv file
+tweet_top_terms%>%write_csv("tweet_top_terms.csv")
+```
+
+```{r}
+tweet_top_terms %>%
+  mutate(term = reorder_within(term, beta, topic)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip() +
+  scale_x_reordered()
+```
+
+
+```{r}
+tweets_lda_3<-LDA(tweets_dtm_trim, k=3, control=list(seed=1234))
+tweet_topics_3<-tidy(tweets_lda_3, matrix="beta")
+```
+
+```{r}
+tweet_top_terms_3 <- tweet_topics_3 %>%
+  group_by(topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+```
+
+```{r}
+tweet_top_terms_3 %>%
+  mutate(term = reorder_within(term, beta, topic)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip() +
+  scale_x_reordered()
+```
+
+```{r}
+tweets_lda_2<-LDA(tweets_dtm_trim, k=2, control=list(seed=1234))
+tweet_topics_2<-tidy(tweets_lda_2, matrix="beta")
+```
+
+```{r}
+tweet_top_terms_2 <- tweet_topics_2 %>%
+  group_by(topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+```
+
+```{r}
+tweet_top_terms_2 %>%
+  mutate(term = reorder_within(term, beta, topic)) %>%
+  ggplot(aes(term, beta, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip() +
+  scale_x_reordered()
+```
+
