@@ -6,4 +6,4 @@ The goal was to find out what users were saying and how they felt about it.
 To view the visualisation and gain all the insights about virtual events
 https://public.tableau.com/views/Sentimentanalysis-virtualevents/Dashboard1?:language=en-GB&:display_count=n&:origin=viz_share_link
 
-https://raw.githubusercontent.com/acalizaya/Projects/master/virtual_events/Dashboard%201-3.png
+
