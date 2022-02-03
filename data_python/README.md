@@ -1,5 +1,5 @@
 # Python Program
-This program computes the **average salary** of employees who match the type of employee (e.g. Manager) and finds out **who has the lowest salary. 
+This program computes the **average salary** of employees who match the type of employee (e.g. Manager) and finds out **who has the lowest salary.** 
 
 Data set for this program was the ***CSV file "employees"***
 
