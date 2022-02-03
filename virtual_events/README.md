@@ -1,6 +1,6 @@
 # Twitter sentiment analysis - virtual events
 
-This is an analysis of tweets containing the hashtag #virtualevents over the last weeks. 
+This is an analysis of tweets containing the hashtag **#virtualevents** over the last weeks. 
 The goal was to find out what users were saying and how they felt about it.
  
 ![](Dashboard%201-3.png)
