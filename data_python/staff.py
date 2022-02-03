@@ -1,4 +1,4 @@
-# Python program that calculate the average and lowest salary
+#Python program that calculate the average and lowest salary
 import csv  # Import csv file
 file = open("employees.csv", "r")
 try:
