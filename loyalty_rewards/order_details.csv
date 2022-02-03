@@ -1,0 +1,409 @@
+"order_id","product_name","product_category_id","unit_price","quantity"
+10248,"Queso Cabrales",4,14,12
+10248,"Singaporean Hokkien Fried Mee",5,9.8,10
+10248,"Mozzarella di Giovanni",4,34.8,5
+10249,"Tofu",7,18.6,9
+10249,"Manjimup Dried Apples",7,42.4,40
+10250,"Jack's New England Clam Chowder",8,7.7,10
+10250,"Manjimup Dried Apples",7,42.4,35
+10250,"Louisiana Fiery Hot Pepper Sauce",2,16.8,15
+10251,"Gustaf's Knäckebröd",5,16.8,6
+10251,"Ravioli Angelo",5,15.6,15
+10251,"Louisiana Fiery Hot Pepper Sauce",2,16.8,20
+10252,"Sir Rodney's Marmalade",3,64.8,40
+10252,"Geitost",4,2,25
+10252,"Camembert Pierrot",4,27.2,40
+10253,"Gorgonzola Telino",4,10,20
+10253,"Chartreuse verte",1,14.4,42
+10253,"Maxilaku",3,16,40
+10254,"Guaraná Fantástica",1,3.6,15
+10254,"Pâté chinois",6,19.2,21
+10254,"Longlife Tofu",7,8,21
+10255,"Chang",1,15.2,20
+10255,"Pavlova",3,13.9,35
+10255,"Inlagd Sill",8,15.2,25
+10255,"Raclette Courdavault",4,44,30
+10256,"Perth Pasties",6,26.2,15
+10256,"Original Frankfurter grüne Soße",2,10.4,12
+10257,"Schoggi Schokolade",3,35.1,25
+10257,"Chartreuse verte",1,14.4,6
+10257,"Original Frankfurter grüne Soße",2,10.4,15
+10258,"Chang",1,15.2,50
+10258,"Chef Anton's Gumbo Mix",2,17,65
+10258,"Mascarpone Fabioli",4,25.6,6
+10259,"Sir Rodney's Scones",3,8,10
+10259,"Gravad lax",8,20.8,1
+10260,"Jack's New England Clam Chowder",8,7.7,16
+10260,"Ravioli Angelo",5,15.6,50
+10260,"Tarte au sucre",3,39.4,15
+10260,"Outback Lager",1,12,21
+10261,"Sir Rodney's Scones",3,8,20
+10261,"Steeleye Stout",1,14.4,20
+10262,"Chef Anton's Gumbo Mix",2,17,12
+10262,"Uncle Bob's Organic Dried Pears",7,24,15
+10262,"Gnocchi di nonna Alice",5,30.4,2
+10263,"Pavlova",3,13.9,60
+10263,"Guaraná Fantástica",1,3.6,28
+10263,"Nord-Ost Matjeshering",8,20.7,60
+10263,"Longlife Tofu",7,8,36
+10264,"Chang",1,15.2,35
+10264,"Jack's New England Clam Chowder",8,7.7,25
+10265,"Alice Mutton",6,31.2,30
+10265,"Outback Lager",1,12,20
+10266,"Queso Manchego La Pastora",4,30.4,12
+10267,"Boston Crab Meat",8,14.7,50
+10267,"Raclette Courdavault",4,44,70
+10267,"Lakkalikööri",1,14.4,15
+10268,"Thüringer Rostbratwurst",6,99,10
+10268,"Mozzarella di Giovanni",4,27.8,4
+10269,"Geitost",4,2,60
+10269,"Mozzarella di Giovanni",4,27.8,20
+10270,"Inlagd Sill",8,15.2,30
+10270,"Ipoh Coffee",1,36.8,25
+10271,"Geitost",4,2,24
+10272,"Sir Rodney's Marmalade",3,64.8,6
+10272,"Gorgonzola Telino",4,10,40
+10272,"Mozzarella di Giovanni",4,27.8,24
+10273,"Ikura",8,24.8,24
+10273,"Gorgonzola Telino",4,10,15
+10273,"Geitost",4,2,20
+10273,"Boston Crab Meat",8,14.7,60
+10273,"Lakkalikööri",1,14.4,33
+10274,"Flotemysost",4,17.2,20
+10274,"Mozzarella di Giovanni",4,27.8,7
+10275,"Guaraná Fantástica",1,3.6,12
+10275,"Raclette Courdavault",4,44,6
+10276,"Ikura",8,24.8,15
+10276,"Konbu",8,4.8,10
+10277,"Rössle Sauerkraut",7,36.4,20
+10277,"Tarte au sucre",3,39.4,12
+10278,"Gula Malacca",2,15.5,16
+10278,"Raclette Courdavault",4,44,15
+10278,"Vegie-spread",2,35.1,8
+10278,"Röd Kaviar",8,12,25
+10279,"Alice Mutton",6,31.2,15
+10280,"Guaraná Fantástica",1,3.6,12
+10280,"Pâté chinois",6,19.2,20
+10280,"Rhönbräu Klosterbier",1,6.2,30
+10281,"Teatime Chocolate Biscuits",3,7.3,1
+10281,"Guaraná Fantástica",1,3.6,6
+10281,"Steeleye Stout",1,14.4,4
+10282,"Nord-Ost Matjeshering",8,20.7,6
+10282,"Ravioli Angelo",5,15.6,2
+10283,"Genen Shouyu",2,12.4,20
+10283,"Teatime Chocolate Biscuits",3,7.3,18
+10283,"Camembert Pierrot",4,27.2,35
+10283,"Mozzarella di Giovanni",4,27.8,3
+10284,"Schoggi Schokolade",3,35.1,15
+10284,"Gula Malacca",2,15.5,21
+10284,"Camembert Pierrot",4,27.2,20
+10284,"Laughing Lumberjack Lager",1,11.2,5
+10285,"Chai",1,14.4,45
+10285,"Boston Crab Meat",8,14.7,40
+10285,"Perth Pasties",6,26.2,36
+10286,"Steeleye Stout",1,14.4,100
+10286,"Tarte au sucre",3,39.4,40
+10287,"Pavlova",3,13.9,40
+10287,"Sasquatch Ale",1,11.2,20
+10287,"Spegesild",8,9.6,15
+10288,"Tourtière",6,5.9,10
+10288,"Scottish Longbreads",3,10,3
+10289,"Aniseed Syrup",2,8,30
+10289,"Wimmers gute Semmelknödel",5,26.6,9
+10290,"Chef Anton's Gumbo Mix",2,17,20
+10290,"Thüringer Rostbratwurst",6,99,15
+10290,"Maxilaku",3,16,15
+10290,"Original Frankfurter grüne Soße",2,10.4,10
+10291,"Konbu",8,4.8,20
+10291,"Gula Malacca",2,15.5,24
+10291,"Manjimup Dried Apples",7,42.4,2
+10292,"Sir Rodney's Marmalade",3,64.8,20
+10293,"Carnarvon Tigers",8,50,12
+10293,"Guaraná Fantástica",1,3.6,10
+10293,"Vegie-spread",2,35.1,5
+10293,"Rhönbräu Klosterbier",1,6.2,6
+10294,"Chai",1,14.4,18
+10294,"Alice Mutton",6,31.2,15
+10294,"Ipoh Coffee",1,36.8,15
+10294,"Camembert Pierrot",4,27.2,21
+10294,"Rhönbräu Klosterbier",1,6.2,6
+10295,"Gnocchi di nonna Alice",5,30.4,4
+10296,"Queso Cabrales",4,16.8,12
+10296,"Pavlova",3,13.9,30
+10296,"Gudbrandsdalsost",4,28.8,15
+10297,"Chartreuse verte",1,14.4,60
+10297,"Mozzarella di Giovanni",4,27.8,20
+10298,"Chang",1,15.2,40
+10298,"Inlagd Sill",8,15.2,40
+10298,"Raclette Courdavault",4,44,30
+10298,"Tarte au sucre",3,39.4,15
+10299,"Teatime Chocolate Biscuits",3,7.3,15
+10299,"Outback Lager",1,12,20
+10300,"Louisiana Hot Spiced Okra",2,13.6,30
+10300,"Scottish Longbreads",3,10,20
+10301,"Boston Crab Meat",8,14.7,10
+10301,"Gnocchi di nonna Alice",5,30.4,20
+10302,"Alice Mutton",6,31.2,40
+10302,"Rössle Sauerkraut",7,36.4,28
+10302,"Ipoh Coffee",1,36.8,12
+10303,"Boston Crab Meat",8,14.7,40
+10303,"Louisiana Fiery Hot Pepper Sauce",2,16.8,30
+10303,"Scottish Longbreads",3,10,15
+10304,"Maxilaku",3,16,30
+10304,"Raclette Courdavault",4,44,10
+10304,"Flotemysost",4,17.2,2
+10305,"Carnarvon Tigers",8,50,25
+10305,"Thüringer Rostbratwurst",6,99,25
+10305,"Chartreuse verte",1,14.4,30
+10306,"Nord-Ost Matjeshering",8,20.7,10
+10306,"Perth Pasties",6,26.2,10
+10306,"Tourtière",6,5.9,5
+10307,"Tarte au sucre",3,39.4,10
+10307,"Scottish Longbreads",3,10,3
+10308,"Gudbrandsdalsost",4,28.8,1
+10308,"Outback Lager",1,12,5
+10309,"Chef Anton's Cajun Seasoning",2,17.6,20
+10309,"Grandma's Boysenberry Spread",2,20,30
+10309,"Singaporean Hokkien Fried Mee",5,11.2,2
+10309,"Ipoh Coffee",1,36.8,20
+10309,"Flotemysost",4,17.2,3
+10310,"Pavlova",3,13.9,10
+10310,"Tarte au sucre",3,39.4,5
+10311,"Singaporean Hokkien Fried Mee",5,11.2,6
+10311,"Gudbrandsdalsost",4,28.8,7
+10312,"Rössle Sauerkraut",7,36.4,4
+10312,"Ipoh Coffee",1,36.8,24
+10312,"Perth Pasties",6,26.2,20
+10312,"Rhönbräu Klosterbier",1,6.2,10
+10313,"Inlagd Sill",8,15.2,12
+10314,"Mascarpone Fabioli",4,25.6,40
+10314,"Escargots de Bourgogne",8,10.6,30
+10314,"Tarte au sucre",3,39.4,25
+10315,"Sasquatch Ale",1,11.2,14
+10315,"Outback Lager",1,12,30
+10316,"Jack's New England Clam Chowder",8,7.7,10
+10316,"Tarte au sucre",3,39.4,70
+10317,"Chai",1,14.4,20
+10318,"Jack's New England Clam Chowder",8,7.7,20
+10318,"Lakkalikööri",1,14.4,6
+10319,"Alice Mutton",6,31.2,8
+10319,"Rössle Sauerkraut",7,36.4,14
+10319,"Lakkalikööri",1,14.4,30
+10320,"Flotemysost",4,17.2,30
+10321,"Steeleye Stout",1,14.4,10
+10322,"Filo Mix",5,5.6,20
+10323,"Genen Shouyu",2,12.4,5
+10323,"NuNuCa Nuß-Nougat-Creme",3,11.2,4
+10323,"Chartreuse verte",1,14.4,4
+10324,"Pavlova",3,13.9,21
+10324,"Steeleye Stout",1,14.4,70
+10324,"Spegesild",8,9.6,30
+10324,"Raclette Courdavault",4,44,40
+10324,"Vegie-spread",2,35.1,80
+10325,"Grandma's Boysenberry Spread",2,20,6
+10325,"Konbu",8,4.8,12
+10325,"Tofu",7,18.6,9
+10325,"Gorgonzola Telino",4,10,4
+10325,"Mozzarella di Giovanni",4,27.8,40
+10326,"Chef Anton's Cajun Seasoning",2,17.6,24
+10326,"Ravioli Angelo",5,15.6,16
+10326,"Rhönbräu Klosterbier",1,6.2,50
+10327,"Chang",1,15.2,25
+10327,"Queso Cabrales",4,16.8,50
+10327,"Nord-Ost Matjeshering",8,20.7,35
+10327,"Escargots de Bourgogne",8,10.6,30
+10328,"Raclette Courdavault",4,44,9
+10328,"Louisiana Fiery Hot Pepper Sauce",2,16.8,40
+10328,"Scottish Longbreads",3,10,10
+10329,"Teatime Chocolate Biscuits",3,7.3,10
+10329,"Nord-Ost Matjeshering",8,20.7,8
+10329,"Côte de Blaye",1,210.8,20
+10329,"Gnocchi di nonna Alice",5,30.4,12
+10330,"Gumbär Gummibärchen",3,24.9,50
+10330,"Mozzarella di Giovanni",4,27.8,25
+10331,"Tourtière",6,5.9,15
+10332,"Carnarvon Tigers",8,50,40
+10332,"Singaporean Hokkien Fried Mee",5,11.2,10
+10332,"Zaanse koeken",3,7.6,16
+10333,"Tofu",7,18.6,10
+10333,"Sir Rodney's Scones",3,8,10
+10333,"Flotemysost",4,17.2,40
+10334,"Filo Mix",5,5.6,8
+10334,"Scottish Longbreads",3,10,10
+10335,"Chang",1,15.2,7
+10335,"Gorgonzola Telino",4,10,25
+10335,"Mascarpone Fabioli",4,25.6,6
+10335,"Manjimup Dried Apples",7,42.4,48
+10336,"Chef Anton's Cajun Seasoning",2,17.6,18
+10337,"Tunnbröd",5,7.2,40
+10337,"Gumbär Gummibärchen",3,24.9,24
+10337,"Inlagd Sill",8,15.2,20
+10337,"Gravad lax",8,20.8,28
+10337,"Mozzarella di Giovanni",4,27.8,25
+10338,"Alice Mutton",6,31.2,20
+10338,"Nord-Ost Matjeshering",8,20.7,15
+10339,"Chef Anton's Cajun Seasoning",2,17.6,10
+10339,"Alice Mutton",6,31.2,70
+10339,"Tarte au sucre",3,39.4,28
+10340,"Carnarvon Tigers",8,50,20
+10340,"Jack's New England Clam Chowder",8,7.7,12
+10340,"Ipoh Coffee",1,36.8,40
+10341,"Geitost",4,2,8
+10341,"Raclette Courdavault",4,44,9
+10342,"Chang",1,15.2,24
+10342,"Gorgonzola Telino",4,10,56
+10342,"Inlagd Sill",8,15.2,40
+10342,"Pâté chinois",6,19.2,40
+10343,"Wimmers gute Semmelknödel",5,26.6,50
+10343,"Scottish Longbreads",3,10,4
+10343,"Lakkalikööri",1,14.4,15
+10344,"Chef Anton's Cajun Seasoning",2,17.6,35
+10344,"Northwoods Cranberry Sauce",2,32,70
+10345,"Northwoods Cranberry Sauce",2,32,70
+10345,"Teatime Chocolate Biscuits",3,7.3,80
+10345,"Singaporean Hokkien Fried Mee",5,11.2,9
+10346,"Alice Mutton",6,31.2,36
+10346,"Gnocchi di nonna Alice",5,30.4,20
+10347,"NuNuCa Nuß-Nougat-Creme",3,11.2,10
+10347,"Chartreuse verte",1,14.4,50
+10347,"Boston Crab Meat",8,14.7,4
+10347,"Rhönbräu Klosterbier",1,6.2,6
+10348,"Chai",1,14.4,15
+10348,"Tunnbröd",5,7.2,25
+10349,"Tourtière",6,5.9,24
+10350,"Valkoinen suklaa",3,13,15
+10350,"Gudbrandsdalsost",4,28.8,18
+10351,"Côte de Blaye",1,210.8,20
+10351,"Jack's New England Clam Chowder",8,7.7,13
+10351,"Gula Malacca",2,15.5,77
+10351,"Louisiana Fiery Hot Pepper Sauce",2,16.8,10
+10352,"Guaraná Fantástica",1,3.6,10
+10352,"Tourtière",6,5.9,20
+10353,"Queso Cabrales",4,16.8,12
+10353,"Côte de Blaye",1,210.8,50
+10354,"Chai",1,14.4,12
+10354,"Thüringer Rostbratwurst",6,99,4
+10355,"Guaraná Fantástica",1,3.6,25
+10355,"Ravioli Angelo",5,15.6,25
+10356,"Gorgonzola Telino",4,10,30
+10356,"Pâté chinois",6,19.2,12
+10356,"Gudbrandsdalsost",4,28.8,20
+10357,"Ikura",8,24.8,30
+10357,"Gumbär Gummibärchen",3,24.9,16
+10357,"Camembert Pierrot",4,27.2,8
+10358,"Guaraná Fantástica",1,3.6,10
+10358,"Sasquatch Ale",1,11.2,10
+10358,"Inlagd Sill",8,15.2,20
+10359,"Pavlova",3,13.9,56
+10359,"Gorgonzola Telino",4,10,70
+10359,"Camembert Pierrot",4,27.2,80
+10360,"Rössle Sauerkraut",7,36.4,30
+10360,"Thüringer Rostbratwurst",6,99,35
+10360,"Côte de Blaye",1,210.8,10
+10360,"Maxilaku",3,16,35
+10360,"Tourtière",6,5.9,28
+10361,"Chartreuse verte",1,14.4,54
+10361,"Camembert Pierrot",4,27.2,55
+10362,"NuNuCa Nuß-Nougat-Creme",3,11.2,50
+10362,"Manjimup Dried Apples",7,42.4,20
+10362,"Tourtière",6,5.9,24
+10363,"Gorgonzola Telino",4,10,20
+10363,"Rhönbräu Klosterbier",1,6.2,12
+10363,"Lakkalikööri",1,14.4,12
+10364,"Gudbrandsdalsost",4,28.8,30
+10364,"Flotemysost",4,17.2,5
+10365,"Queso Cabrales",4,16.8,24
+10366,"Louisiana Fiery Hot Pepper Sauce",2,16.8,5
+10366,"Original Frankfurter grüne Soße",2,10.4,5
+10367,"Sasquatch Ale",1,11.2,36
+10367,"Tourtière",6,5.9,18
+10367,"Louisiana Fiery Hot Pepper Sauce",2,16.8,15
+10367,"Original Frankfurter grüne Soße",2,10.4,7
+10368,"Sir Rodney's Scones",3,8,5
+10368,"Rössle Sauerkraut",7,36.4,13
+10368,"Ravioli Angelo",5,15.6,25
+10368,"Wimmers gute Semmelknödel",5,26.6,35
+10369,"Thüringer Rostbratwurst",6,99,20
+10369,"Gnocchi di nonna Alice",5,30.4,18
+10370,"Chai",1,14.4,15
+10370,"Wimmers gute Semmelknödel",5,26.6,30
+10370,"Longlife Tofu",7,8,20
+10371,"Inlagd Sill",8,15.2,6
+10372,"Sir Rodney's Marmalade",3,64.8,12
+10372,"Côte de Blaye",1,210.8,40
+10372,"Camembert Pierrot",4,27.2,70
+10372,"Mozzarella di Giovanni",4,27.8,42
+10373,"Escargots de Bourgogne",8,10.6,80
+10373,"Flotemysost",4,17.2,50
+10374,"Gorgonzola Telino",4,10,30
+10374,"Escargots de Bourgogne",8,10.6,15
+10375,"Tofu",7,18.6,15
+10375,"Tourtière",6,5.9,10
+10376,"Gorgonzola Telino",4,10,42
+10377,"Rössle Sauerkraut",7,36.4,20
+10377,"Chartreuse verte",1,14.4,20
+10378,"Flotemysost",4,17.2,6
+10379,"Jack's New England Clam Chowder",8,7.7,8
+10379,"Vegie-spread",2,35.1,16
+10379,"Louisiana Fiery Hot Pepper Sauce",2,16.8,20
+10380,"Nord-Ost Matjeshering",8,20.7,18
+10380,"Perth Pasties",6,26.2,20
+10380,"Camembert Pierrot",4,27.2,6
+10380,"Outback Lager",1,12,30
+10381,"Longlife Tofu",7,8,14
+10382,"Chef Anton's Gumbo Mix",2,17,32
+10382,"Carnarvon Tigers",8,50,9
+10382,"Thüringer Rostbratwurst",6,99,14
+10382,"Geitost",4,2,60
+10382,"Longlife Tofu",7,8,50
+10383,"Konbu",8,4.8,20
+10383,"Valkoinen suklaa",3,13,15
+10383,"Gnocchi di nonna Alice",5,30.4,20
+10384,"Sir Rodney's Marmalade",3,64.8,28
+10384,"Camembert Pierrot",4,27.2,15
+10385,"Uncle Bob's Organic Dried Pears",7,24,10
+10385,"Camembert Pierrot",4,27.2,20
+10385,"Scottish Longbreads",3,10,8
+10386,"Guaraná Fantástica",1,3.6,15
+10386,"Sasquatch Ale",1,11.2,10
+10387,"Guaraná Fantástica",1,3.6,15
+10387,"Rössle Sauerkraut",7,36.4,6
+10387,"Raclette Courdavault",4,44,12
+10387,"Flotemysost",4,17.2,15
+10388,"Rogede sild",8,7.6,15
+10388,"Filo Mix",5,5.6,20
+10388,"Perth Pasties",6,26.2,40
+10389,"Ikura",8,24.8,16
+10389,"Pâté chinois",6,19.2,15
+10389,"Tarte au sucre",3,39.4,20
+10389,"Outback Lager",1,12,30
+10390,"Gorgonzola Telino",4,10,60
+10390,"Steeleye Stout",1,14.4,40
+10390,"Spegesild",8,9.6,45
+10390,"Mozzarella di Giovanni",4,27.8,24
+10391,"Konbu",8,4.8,18
+10392,"Gudbrandsdalsost",4,28.8,50
+10393,"Chang",1,15.2,25
+10393,"Tofu",7,18.6,42
+10393,"NuNuCa Nuß-Nougat-Creme",3,11.2,7
+10393,"Gumbär Gummibärchen",3,24.9,70
+10393,"Gorgonzola Telino",4,10,32
+10394,"Konbu",8,4.8,10
+10394,"Tarte au sucre",3,39.4,10
+10395,"Spegesild",8,9.6,28
+10395,"Perth Pasties",6,26.2,70
+10395,"Gudbrandsdalsost",4,28.8,8
+10396,"Tunnbröd",5,7.2,40
+10396,"Flotemysost",4,17.2,60
+10396,"Mozzarella di Giovanni",4,27.8,21
+10397,"Sir Rodney's Scones",3,8,10
+10397,"Manjimup Dried Apples",7,42.4,18
+10398,"Steeleye Stout",1,14.4,30
+10398,"Pâté chinois",6,19.2,120
+10399,"Scottish Longbreads",3,10,60
+10399,"Flotemysost",4,17.2,30
+10399,"Lakkalikööri",1,14.4,35
+10399,"Original Frankfurter grüne Soße",2,10.4,14
+10400,"Thüringer Rostbratwurst",6,99,21
+10400,"Steeleye Stout",1,14.4,35
+10400,"Maxilaku",3,16,30
