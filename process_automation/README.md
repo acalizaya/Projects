@@ -12,3 +12,14 @@ Google doc templates are the same word documents, will use them to merge data pu
 ![](templates.jpg)
 
 
+In order to make the user's experience easy and convenient, a customized menu was created with three main documents to generate.
+
+function onOpen() {
+  const ui = SpreadsheetApp.getUi();
+  const menu = ui.createMenu('Create Documents');
+  menu.addItem('Create QD PDF', 'createQds')
+  menu.addItem('Create LOC PDF', 'createLocs')
+  menu.addItem('Create REQ PDF', 'createReqs')
+  menu.addToUi();
+
+}
