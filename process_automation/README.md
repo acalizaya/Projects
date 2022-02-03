@@ -14,8 +14,8 @@ Google doc templates are the same word documents, will use them to merge data pu
 
 In order to make the user's experience easy and convenient, a customized menu was created with three main documents to generate.
 
-
 ![](documents.png)
+
 
 A sub folder in Google Drive contains the qd pdf and client folder: 
 
