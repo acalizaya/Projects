@@ -18,6 +18,8 @@ In order to make the user's experience easy and convenient, a customized menu wa
 ![](documents.png)
 
 A sub folder in Google Drive contains the qd pdf and client folder: 
+
 QD pdf: The created QD are automatically saved as PDF in this sub-folder.
 Client folder: After created the LOC, a client folder will be added and the documents (QD, LOC) will be automatically saved in this sub-folder. 
+![](folder.png)
 
