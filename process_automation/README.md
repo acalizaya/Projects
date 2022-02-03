@@ -9,4 +9,6 @@ A Google Drive folder was created containing the source data spreadsheet and the
 Source Data spreadsheet include the data to auto-fill the google doc templates.
 Google doc templates are the same word documents, will use them to merge data pulled from the Source Data into the copies made. 
 
+![](templates.jpg)
+
 
