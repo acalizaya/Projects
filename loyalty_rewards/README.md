@@ -1,1 +1,1 @@
-# Project while doing my Masters
+# During my Masters degree, I collaborated on this project.
