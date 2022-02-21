@@ -1,0 +1,139 @@
+---
+title: "EDA"
+author: "Antoneely Calizaya"
+date: "21/02/2022"
+output: pdf_document
+---
+
+```{r}
+install.packages("tidyverse")
+install.packages("ggplot2")
+install.packages("scales")
+install.packages("glue")
+install.packages("tidyselect")
+library(tidyverse)
+library(ggplot2)
+library(scales)
+library(glue)
+library(tidyselect)
+```
+
+
+```{r}
+train_data <- 
+  read_csv("train.csv",
+           show_col_types = FALSE) %>%
+  clean_names() %>%
+  select(id, dplyr::everything())
+
+skim(train_data)
+```
+1. Variables with missing values, replace with NA or mean, average (year_built,
+energy_star_rating, direction_max_wind_speed,  direction_peak_wind_speed, max_wind_speed,days_with_fog)
+2. Consider to agroup the Average temperature into 4 seasons or total year
+3. Check correlation betweeten building_class, facility_tye with site_eui
+
+```{r}
+#convert conitnous variable to factor
+train_data$year_factor <-as.factor(train_data$year_factor)
+
+#replaced "0" values to NA in year_built variable
+train_data <- train_data %>%
+  mutate(year_built = na_if(year_built, 0))
+
+```
+
+Understanding the missing values
+
+```{r}
+train_data %>% skim() %>%
+  filter(n_missing != 0) %>%
+  as_tibble() %>%
+  select(skim_variable, n_missing, complete_rate) %>%
+  mutate(missing_rate = round(abs(complete_rate - 1) * 100, 1)) %>%
+  ggplot(aes(x=fct_reorder(skim_variable, n_missing), y=missing_rate,fill = skim_variable,label = paste0(missing_rate, "%", " / ", n_missing)))+
+  geom_col(width = .5) +
+  theme_minimal()
+  
+```
+
+```{r}
+train_data %>% skim() %>%
+  filter(n_missing != 0) %>%
+  as_tibble() %>%
+  select(skim_variable, n_missing, complete_rate) %>%
+  mutate(missing_rate = round(abs(complete_rate - 1) * 100, 1)) %>%
+  ggplot(aes(
+    x = fct_reorder(skim_variable, n_missing),
+    y = missing_rate,
+    fill = skim_variable,
+    label = paste0(missing_rate, "%", " / ", n_missing)
+  )) +
+  geom_col(width = .5) +
+  geom_text(aes(
+    hjust = case_when(n_missing == min(n_missing) ~ -0.1,
+                      TRUE ~ 1.2),
+    color = case_when(n_missing == min(n_missing) ~ "black",
+                      TRUE ~ "white")
+  )) +
+  coord_flip() +
+  theme(legend.position = "none") +
+  scale_y_continuous(label = label_percent(scale = 1)) +
+  scale_fill_manual(values = c(
+    "#e41a1c",
+    "#984ea3",
+    "#4b2b31",
+    "#090966",
+    "#d6493c",
+    "#203d51"
+  )) +
+  scale_color_manual(values = c("black", "white")) +
+  labs(
+    title = "Missing values within each variable",
+    caption = "Data source: Kaggle.com, WiDS_Datathon_2022",
+    x = "Variable name",
+    y = "Percent"
+  )
+
+```
+```{r}
+eui_outlier_fun <- function(var_to) {
+  
+  var_title <- as_label(enquo(var_to))
+  
+var_title <- str_to_title(str_replace(var_title, pattern = "_", replacement = " " ))
+
+  train_data %>% 
+  select(site_eui, {{var_to}} ) %>%
+  ggplot(aes(x = as.factor({{var_to}}), 
+             y = site_eui)) +
+    geom_boxplot(
+      fill = "#D5B488",
+      color = "#27A118",
+      alpha = 0.5,
+      outlier.color = "#F6645A",
+      size = 0.5
+    ) +
+    coord_flip() +
+    theme(axis.text.y = element_text(size = 5),
+          axis.ticks.y = element_blank()) +
+    labs(
+      title = glue("Site EUI outliers by {var_title}"),
+      subtitle = NULL,
+      x = glue("{var_title}"),
+      y = NULL
+    )
+}
+
+p1 <- eui_outlier_fun(state_factor) 
+
+p2 <- eui_outlier_fun(building_class)
+
+p3 <- eui_outlier_fun(year_factor)
+
+p4 <- eui_outlier_fun(elevation)
+
+((p1/p2/p3)|p4) + 
+  plot_annotation(title = "Site EUI's Outliers by state factor, building class, year built and elevation")
+```
+
