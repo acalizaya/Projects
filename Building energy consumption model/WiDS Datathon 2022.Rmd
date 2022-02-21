@@ -1,0 +1,48 @@
+---
+title: "model"
+author: "Antoneely Calizaya"
+date: "17/02/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+install.packages("skimr")
+install.packages("janitor")
+install.packages("ggplot2")
+library(skimr)
+library(janitor)
+library(ggplot2)
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+test_data <- read.csv("test.csv")
+train_data <- read.csv("train.csv")
+sample_solution <- read.csv("sample_solution.csv")
+
+train_data <- clean_names(train_data)
+
+tabyl(train_data, state_factor, year_factor)
+
+tabyl(train_data, facility_type, state_factor)f
+
+```
+
+```{r}
+ggplot(train_data, aes(state_factor, facility_type, colour = year_factor, alpha = 0.2))+
+  geom_point(alpha = 0.2)
+```
+year is shown as a continous variable, convert to factor
+
+```{r}
+train_data$year_factor <-as.factor(train_data$year_factor)
+
+ggplot(train_data, aes(state_factor, facility_type, colour = year_factor))+
+  geom_point(alpha = 0.2)+
+  theme_minimal()
+
+train_data%>%
+  group_by(facility_type)%>%
+  count(year_factor, state_factor, sort = TRUE)
+```
+
