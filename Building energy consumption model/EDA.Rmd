@@ -7,11 +7,15 @@ output: pdf_document
 
 ```{r}
 install.packages("tidyverse")
+install.packages("skimr")
+install.packages("janitor")
 install.packages("ggplot2")
 install.packages("scales")
 install.packages("glue")
 install.packages("tidyselect")
 library(tidyverse)
+library(skimr)
+library(janitor)
 library(ggplot2)
 library(scales)
 library(glue)
@@ -99,7 +103,7 @@ train_data %>% skim() %>%
 ```{r}
 eui_outlier_fun <- function(var_to) {
   
-  var_title <- as_label(enquo(var_to))
+var_title <- as_label(enquo(var_to))
   
 var_title <- str_to_title(str_replace(var_title, pattern = "_", replacement = " " ))
 
@@ -133,7 +137,35 @@ p3 <- eui_outlier_fun(year_factor)
 
 p4 <- eui_outlier_fun(elevation)
 
-((p1/p2/p3)|p4) + 
-  plot_annotation(title = "Site EUI's Outliers by state factor, building class, year built and elevation")
 ```
 
+```{r}
+ggplot(train_data, aes(state_factor, site_eui, colour = state_factor, alpha = 0.2))+
+  geom_point(alpha = 0.2)
+```
+```{r}
+ggplot(train_data, aes(building_class, site_eui, alpha = 0.2))+
+  geom_point(alpha = 0.2)
+```
+```{r}
+ggplot(train_data, aes(year_factor, site_eui, colour = year_factor, alpha = 0.2))+
+  geom_point(alpha = 0.2)
+```
+
+```{r}
+ggplot(train_data, aes(energy_star_rating, site_eui, colour = year_factor, alpha = 0.2))+
+  geom_point(alpha = 0.2)
+```
+
+```{r}
+ggplot(train_data, aes(floor_area, site_eui, alpha = 0.2))+
+  geom_point(alpha = 0.2)
+```
+Buildings with less square feet use more energy.
+
+```{r}
+ggplot(train_data, aes(floor_area, building_class, alpha = 0.2))+
+  geom_point(alpha = 0.2)
+```
+
+ot of building more than 1e+6 square feet majority of them are commercial class! and the floor area outliers are mainly related to commercial buildings! it is a piece of important information!

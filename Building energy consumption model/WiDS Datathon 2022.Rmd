@@ -15,6 +15,7 @@ library(ggplot2)
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
 ```{r}
 test_data <- read.csv("test.csv")
 train_data <- read.csv("train.csv")
@@ -24,7 +25,7 @@ train_data <- clean_names(train_data)
 
 tabyl(train_data, state_factor, year_factor)
 
-tabyl(train_data, facility_type, state_factor)f
+tabyl(train_data, facility_type, state_factor
 
 ```
 
