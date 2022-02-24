@@ -169,3 +169,9 @@ ggplot(train_data, aes(floor_area, building_class, alpha = 0.2))+
 ```
 
 ot of building more than 1e+6 square feet majority of them are commercial class! and the floor area outliers are mainly related to commercial buildings! it is a piece of important information!
+
+```{r}
+ggplot(train_data, aes(site_eui,facility_type, colour = year_factor))+
+  geom_point(alpha = 0.1)+
+  theme_minimal()
+```
