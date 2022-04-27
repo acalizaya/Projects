@@ -1,0 +1,40 @@
+---
+title: "Untitled"
+author: "Antoneely Calizaya"
+date: "4/27/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+```{r}
+prosperity_index<-read_csv("https://raw.githubusercontent.com/acalizaya/Projects/master/Legatum%20Property%20Index-DSAU/Dataset/Prosperity%20Index.csv")
+
+```
+```{r}
+prosperity_index%>%
+  select(area_name,rank_2007, rank_2008, rank_2009, rank_2010, rank_2021)%>%
+  
+  slice_max(rank_2007)
+
+
+%>%
+  slice_max(rank_2021)
+  
+  apply(prosperity_index, 2, max)
+  
+  df[c("trait_sire", "trait_dam")] <- 
+    lapply(df[c("sire_id", "dam_id")], function(col) df$trait_id[match(col, df$animal_id)])
+
+  
+  prosperity_index[c("top_2007", "top_2008")] <- 
+    lapply(prosperity_index[c("rank_2007", "rank_2008")], function(col) prosperity_index$area_name[match(col,"167")])
+           
+           function(col) prosperity_index$area_name[match(col,)]
+    lapply(df[c("sire_id", "dam_id")], function(col) df$trait_id[match(col, df$animal_id)])
+
+```
+
+
