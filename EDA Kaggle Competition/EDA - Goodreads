@@ -1,0 +1,705 @@
+---
+title: "Kaggle - Goodreads"
+author: "Antoneely Calizaya"
+date: "02/06/2022"
+output: html_document
+---
+
+```{R}
+
+library(tidyverse)
+library(tidymodels)
+library(skimr)
+library(janitor)
+library(randomForest)
+library(cluster)
+library(ggplot2)
+library(dplyr)
+library(broom)
+library(tidyr)
+library(forcats)
+library(factoextra)
+
+```
+### About the data
+The data for this report is provided for Goodreads, contains all the listed book on the platform. The size of dataset (11,127 book reviews) considering 11 variables, most of which will be used in the analysis. This dataset include the books information, the rating and reviews count, and the average rating. 
+
+```{r}
+#loading dataset
+data<- read_csv("books.csv")
+```
+
+```{r}
+#summary of dataset
+skim(data)
+```
+
+Based on the summary of the data above it can be see that just 4 rows contain NA values, and the column isbn13 is repeating isbn. Hence we decide to remove the empty rows and drop the isbn13.
+
+**Cleaning the data**
+```{r}
+#remove column isbn13 and omit NA values
+data<-data%>%
+  select(-isbn13)
+
+data<-data%>%
+  na.omit(average_rating)
+```
+
+In order to be able to address the primary business objective to improve viewership and future content, a data exploration through the variables is needed. Will start for the numerical variables, following by the categorical variables including a summaries discussion about why we make those assumptions. 
+
+### Numerical Variables
+
+**Publication_date**
+
+```{r}
+#publication date is to wide
+#grouping by year is required
+#change format of publication date as date
+data<-data%>%
+mutate(publication_date=format(as.Date(publication_date,"%m/%d/%Y")))
+
+#change publication date to get year
+data <-data%>%
+  mutate(year=format(as.Date(publication_date,"%Y"),"%Y"))
+```
+
+```{r}
+#publication date (year) distribution
+  data%>%
+  group_by(year) %>%
+  summarize(count = length(year))%>%
+  arrange(desc(count)) %>%
+  top_n(20)%>%
+  ggplot(aes(fct_reorder(year, count), count))+
+  geom_col(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "chocolate1"
+  )+
+  theme_classic()+
+  labs(
+    title = "Distribution of Year",
+    caption = "Figure 1",
+    x = "Year",
+    y = "Frequency"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+```
+From the above plot, we can see that this dataset include some classic books, and the number of books increased proportional to the year. Besides that, we just decided to consider the `year` to predict the average rating rank. 
+
+```{r}
+#year vs average rating
+data%>%
+  mutate(year=as.numeric(year))%>%
+  ggplot(aes(x=year,y=average_rating))+
+  geom_point()+
+  scale_x_log10()+
+  geom_smooth(method = "lm")+
+  theme_classic()+
+  labs(
+    title = "Distribution of Rating by year published",
+    caption = "Figure 2",
+    x = "Year",
+    y = "Average rating"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+```
+From the plot above is interesting to see the average rating decrease from 1975, and considerable from 2000.  This could be due to the rise of digital and self publishing boom. Finally, it looks like the `year` is related to `average rating` with a light change of ratings through the years. Hence, we decided to consider the `year` to predict the average rating rank. 
+
+**Rating**
+```{r}
+#rating distribution
+data%>%
+  ggplot(aes(average_rating))+
+  geom_histogram(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato"
+  )+
+  theme_classic()+
+  scale_y_log10()+
+  labs(
+    title = "Distribution of Rating",
+    caption = "Figure 3",
+    x = "Average_rating",
+    y = "Frequency"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+
+data$average_rating%>%summary
+```
+The histogram above represent a normal distribution of the average rating and the data doesn't present outliers. Hence forward modification is not required. In our models average rating is condesider the target variable that we will predict. 
+
+**Number of pages**
+```{r}
+#number pages distribution
+data%>%
+  ggplot(aes(num_pages))+
+  geom_histogram(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato"
+  )+
+  theme_classic()+
+  scale_y_log10()+
+  labs(
+    title = "Distribution of number of pages",
+    caption = "Figure 4",
+    x = "Num_pages",
+    y = "Frequency"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+```
+It's interesting that some books have 0 number of pages and minimum amount, this is perhaps some of the reviews are for audio books. A forward modification is decided in order to proceed with the analysis.The next step is take a look into the quantiles. 
+
+**Remove outliers**
+Based on my research, I decided to use this function from @AaryanGupta to remove the outliers.
+```{r}
+#function to remove outliers
+remove_outliers = function(x){
+  uc1 = quantile(x, probs = 0.95, na.rm = TRUE)
+  lc1 = quantile(x, probs = 0.05, na.rm = TRUE)
+  x[x > uc1] = uc1
+  x[x < lc1] = lc1
+  return(x)
+}
+```
+
+**Number of pages without outliers**
+```{r}
+#removing outliers from number pages variable
+data$num_pages=as.numeric(sapply(data["num_pages"], remove_outliers))
+  
+#new number pages distribution
+data%>%
+  ggplot(aes(num_pages))+
+  geom_histogram(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato"
+  )+
+  theme_classic()+
+  labs(
+    title = "Distribution of number of pages without outliers",
+    caption = "Figure 5",
+    x = "Number of pages",
+    y = "Frequency"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+```
+
+```{r}
+#number pages vs average rating
+data%>%
+  ggplot(aes(x=num_pages,y=average_rating))+
+  geom_point()+
+  scale_x_log10()+
+  geom_smooth(method = "lm")+
+  theme_classic()+
+  labs(
+    title = "Distribution of Rating by num_pages",
+    caption = "Figure 6",
+    x = "Num_pages",
+    y = "Average rating"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+```
+From the plot above it looks like the `num_pages` is related to `average rating`, but with a light change of ratings proportional of number pages. Hence, we decided to consider the `num_pages` to predict the average ratings.
+
+
+**Rating count**
+```{r}
+#rating count distribution
+data%>%
+  ggplot(aes(ratings_count))+
+  geom_boxplot(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato"
+  )+
+  theme_classic()+
+  labs(
+    title = "Distribution of rating count",
+    caption = "Figure 7",
+    x = "Rating count",
+    y = "Density"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+```
+The rating present a wide range of rating count records, hence a forward modification is decided in order to proceed with the analysis.The next step is take a look into the quantiles. 
+
+
+**Rating Count without outliers**
+```{r}
+#remove outliers from rating count variable
+data$ratings_count=as.numeric(sapply(data["ratings_count"], remove_outliers))
+  
+#new rating count distribution
+  data%>%
+  ggplot(aes(ratings_count))+
+  geom_boxplot(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato"
+  )+
+  theme_classic()+
+  scale_y_log10()+
+  labs(
+    title = "Distribution of rating count without outliers",
+    caption = "Figure 8",
+    x = "Rating count",
+    y = "Density"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+```
+
+```{r}
+#rating count vs average rating
+data%>%
+  ggplot(aes(x=ratings_count,y=average_rating))+
+  geom_point()+
+  scale_x_log10()+
+  geom_smooth(method = "lm")+
+  theme_classic()+
+  labs(
+    title = "Distribution of Rating by rating count",
+    caption = "Figure 9",
+    x = "Rating count",
+    y = "Average rating"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+```
+From the plot above it looks like the `rating_count` is positive related to `average rating`, but with a light change of ratings vs rating count. More ratings means the book is more popular. Hence, we decided to consider the `rating_count` to predict the average ratings.
+
+
+**Text review count**
+
+```{r}
+# text review count distribution
+data%>%
+  ggplot(aes(text_reviews_count))+
+  geom_histogram(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato"
+  )+
+  theme_classic()+
+  scale_y_log10()+
+  labs(
+    title = "Distribution of text review count",
+    caption = "Figure 10",
+    x = "Text review count",
+    y = "Frequency"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+```
+From the plot above we can see that the text review count present a wide range of records,hence forward modification is decided in order to proceed with the analysis.The next step is take a look into the quantiles to remove the outliers.
+
+**Text review count without outliers**
+```{r}
+#remove quantiles from text reviw count variable
+data$text_reviews_count=as.numeric(sapply(data["text_reviews_count"], remove_outliers))
+  
+#new text review count distribution
+  data%>%
+  ggplot(aes(text_reviews_count))+
+  geom_histogram(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato"
+  )+
+  theme_classic()+
+  labs(
+    title = "Distribution of text review count without outliers",
+    caption = "Figure 11",
+    x = "Text review count",
+    y = "Frequency"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+```
+
+```{r}
+#text review count vs average rating
+data%>%
+  ggplot(aes(x=text_reviews_count,y=average_rating))+
+  geom_point()+
+  scale_x_log10()+
+  geom_smooth(method = "lm")+
+  theme_classic()+
+  labs(
+    title = "Distribution of Rating by text review count",
+    caption = "Figure 12",
+    x = "Text review count",
+    y = "Average rating"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+```
+As we concluded with rating count, more reviews means more book popularity. Hence we dediced to consider `text review count` to predict the average rating. As well, for a clear picture and help the to predict ratings we decide to categorise the variable.
+
+**Text review count by categories**
+
+In order to have a better understanding of `average_rating` and `text_reviews_count` separately and to help the model, `text_reviews_count` were grouped into four categories based on the quantiles "very high review", "high review", "medium review",and "low review".
+
+```{r}
+#text review count quantiles
+Quantile1<-quantile(data$text_reviews_count)
+Quantile1
+
+#grouping text review count 
+data<-data %>%
+        mutate(text_reviews_rank = ifelse(text_reviews_count >= 2158, "very high review", 
+                           ifelse(text_reviews_count >= 238 & text_reviews_count < 2158,"high review",
+                           ifelse(text_reviews_count >= 47 & text_reviews_count < 238, "medium review",
+                           "low review"))))
+```
+
+
+```{r}
+#new text review distribution by categories
+data%>%
+  group_by(text_reviews_rank)%>%
+  summarise(n=n())%>%
+  ggplot(aes(x=factor(text_reviews_rank),y=n))+
+  geom_col(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato"
+  )+
+  theme_classic()+
+  geom_text(aes(label = n,vjust=-0.2))+
+  labs(
+    title = "Distribution of Text Reviews rank",
+    caption = "Figure 13",
+    x = "Text reviews rank",
+    y = "count"
+  )+
+theme(plot.title = element_text(face = "bold"))
+```
+Around 50% of the books has a low review. We recomend to Googlereads to focus on the very high and high review rank books in order to improve viewership and future content on the GoodRead Blog. Hence we dediced to consider `text review rank` to predict the average rating.
+
+
+
+### Categorical Variables
+
+**Title**
+**Which books receive the best ratings?**
+
+```{r}
+#top 20 book with best ratings
+data%>%
+  filter(average_rating>=4.140)%>%
+  group_by(title, average_rating)%>%
+  summarise(n=n())%>%
+  arrange(desc(n))%>%
+  head(n=20)%>%  
+  ggplot(aes(fct_reorder(title, average_rating), average_rating))+
+  geom_col(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato")+
+  coord_flip()+
+  theme_classic()+
+  labs(
+    title = "Titles that recieve the best ratings",
+    caption = "Figure 14",
+    x = "Titles",
+    y = "Average_rating"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+```
+From the plot above we can see there are book that has more than one version, but they represent a different edition. Hence, there is no modification or grouping needed it. The graphs represents the top 20 books with the best rating. Unfortunately, the data set doesn't present a genre variable to cross this findings. Hence we dediced not to consider `title` to predict the average rating.
+
+**Authors**
+
+```{r}
+#author distribution
+data%>%
+  group_by(authors) %>%
+  summarize(count = length(authors))%>%
+  arrange(desc(count)) %>%
+  top_n(20)%>%
+ggplot(aes(fct_reorder(authors, count), count))+
+  geom_col(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato")+
+  coord_flip()+
+  theme_classic()+
+  labs(
+    title = "Number of books by author",
+    caption = "Figure 15",
+    x = "Author",
+    y = "Number of books"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+
+```
+```{r}
+data$authors%>%unique%>%length()
+```
+
+We consider that the `author` variable is significant to predict `average_rating`. Hence, as there are 6639 different authors we consider appropriate to categorise this variable as well. We took a look into the quantiles and decide split authors into `regular author`, `good author` and `popular author`.  
+
+```{r}
+#create new data set authors
+#summarise number books by author
+authors_totalbooks<-data%>%
+  group_by(authors) %>%
+  summarize(count = length(authors))
+
+#authors quantile
+Quantile2<-quantile(authors_totalbooks$count)
+Quantile2
+
+#grouping authors
+authors_totalbooks<-authors_totalbooks %>%
+        mutate(authors_rank = ifelse(count >= 4, "popular author", 
+                           ifelse(count >1 & count< 4,"good author",
+                           "regular author")))
+```
+
+```{r}
+#new authors distribution by rank
+authors_totalbooks%>%
+  group_by(authors_rank)%>%
+  summarise(n=n())%>%
+  ggplot(aes(x=factor(authors_rank),y=n))+
+  geom_col(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato"
+  )+
+  theme_classic()+
+  geom_text(aes(label = n,vjust=-0.2))+
+  labs(
+    title = "Distribution of Author rank",
+    caption = "Figure 16",
+    x = "Author rank",
+    y = "count"
+  )+
+theme(plot.title = element_text(face = "bold"))
+```
+We recommend to Googlereads to focus on the good and popular authors in order to improve viewership and future content on the GoodRead Blog. Hence we dediced to consider `author rank` to predict the average rating.
+
+
+Joining two datasets `data` and `authors_totalbooks`
+```{r}
+#joining
+data<-merge(data,authors_totalbooks,by=c("authors"))
+```
+
+
+**Language**
+```{r}
+#lamguage distribution
+data%>%
+  #language distribution
+  group_by(language_code)%>%
+  summarise(n=n())%>%
+  ggplot(aes(fct_reorder(language_code, n),n))+
+  geom_col(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato")+
+  coord_flip()+
+  scale_y_log10()+
+  theme_classic()+
+  labs(
+    title = "Distribution of Language",
+    caption = "Figure 17",
+    x = "Language",
+    y = "count"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+```
+The distribution shows that the data has more books in english, and there are four types: eng, en-US, en-GB, and en-CA. There are 23 other types of language with few books. Hence, we decided to categorise the `language_code` into two groups: "English" and "others".
+
+
+```{r}
+#grouping english language and others
+data$language_code<-ifelse(data$language_code == "en-US","Eng",
+                        ifelse(data$language_code == "en-GB","Eng",
+                        ifelse(data$language_code == "en-CA","Eng",
+                        ifelse(data$language_code == "eng","Eng",
+                           "others"))))
+```
+
+
+```{r}
+#new distribution language
+data%>%
+  group_by(language_code)%>%
+  summarise(n=n())%>%
+  ggplot(aes(fct_reorder(language_code, -n),n))+
+  geom_col(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato")+
+  theme_classic()+
+  geom_text(aes(label = n,vjust=-0.2))+
+  labs(
+    title = "New distribution of Language",
+    caption = "Figure 18",
+    x = "Language",
+    y = "count"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+```
+We can't tell so far if the type of lamguage have an impact on the average rating. However, we dediced to consider `language` by categories to predict the average rating, and see their level of importance.
+
+**Publisher**
+```{r}
+#publisher distribution
+data%>%
+  group_by(publisher) %>%
+  summarize(count = length(publisher))%>%
+  arrange(desc(count)) %>%
+  top_n(20)%>%
+ggplot(aes(fct_reorder(publisher, count), count))+
+  geom_col(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato")+
+  coord_flip()+
+  theme_classic()+
+  labs(
+    title = "Number of books by publisher",
+    caption = "Figure 19",
+    x = "Publisher",
+    y = "Number of books"
+  )+
+  theme(plot.title = element_text(face = "bold"))
+
+```
+
+
+```{r}
+data$publisher%>%unique%>%length()
+```
+
+We consider that the `publisher` variable is significant to predict `average_rating`. Hence, as there are 2290 different publishers we consider appropriate to categorise this variable as well. We took a look into the quantiles and decide split publisher into `regular publisher`, `good publisher` and `popular publisher`.  
+
+```{r}
+#create new data set publisher
+#summarise number books by publisher
+publisher_totalbooks<-data%>%
+  group_by(publisher) %>%
+  summarize(count = length(authors))
+
+#publisher quantiles
+Quantile3<-quantile(publisher_totalbooks$count)
+Quantile3
+
+#grouping pubishers
+publisher_totalbooks<-publisher_totalbooks %>%
+        mutate(publisher_rank = ifelse(count >= 4, "popular publisher", 
+                           ifelse(count >1 & count< 4,"good publisher",
+                           "regular publisher")))
+```
+
+```{r}
+#new distribution by publisher rank
+publisher_totalbooks%>%
+  group_by(publisher_rank)%>%
+  summarise(n=n())%>%
+  ggplot(aes(x=factor(publisher_rank),y=n))+
+  geom_col(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato"
+  )+
+  theme_classic()+
+  geom_text(aes(label = n,vjust=-0.2))+
+  labs(
+    title = "Distribution of Publisher rank",
+    caption = "Figure 20",
+    x = "Publisher rank",
+    y = "count"
+  )+
+theme(plot.title = element_text(face = "bold"))
+```
+We recommend to Googlereads to focus on the good and popular publishers in order to improve viewership and future content on the GoodRead Blog. Hence we dediced to consider `publisher rank` to predict the average rating.
+
+
+Joining two dataset `data` and `publisher_totalbooks`
+```{r}
+#joining
+data<-merge(data,publisher_totalbooks,by=c("publisher"))
+```
+
+After the data exploration we are able to answer some of the businesses problmes. 
+
+**How can we improve viewership and future content on our GoodReadBooks Blog?**
+
+We recommend to Googlereads to focus on the (1)`text review rank` very high and high rank, (2) `author rank` good and popular authors, and (3) `publisher rank` popular and good publisher. 
+**Who are the top authors that we can collaborate with for future content?**
+The following list are the top authors that Goodreads could collaborate with to increase the content engagement. 
+
+```{r}
+knitr::kable(data%>%
+  group_by(authors) %>%
+  summarize(count = length(authors))%>%
+  arrange(desc(count)) %>%
+  top_n(20))
+```
+
+Majority of the book in our blog received positive ratings over 3.77 on average. An understanding of low rating books is required, as to which authors these are, which publishing house and text review analysis to ascertain whether we need to remove these books from our recommendations.
+
+##Data pre-process for Classification Model
+
+**Average Rating Rank**
+
+```{r}
+#Create new data set to understand Average Rating as Ranks
+
+#average rating quantiles
+
+
+Quantile4<-quantile(data$average_rating)
+Quantile4
+
+average_rating_ranks<-data %>%
+        mutate(average_rating_rank = ifelse(average_rating >= 4.14, "very high rating", 
+                           ifelse(average_rating >= 3.96 & average_rating < 4.14,"high rating",
+                           ifelse(average_rating >= 3.77 & average_rating < 3.96, "medium rating",
+                           "low rating"))))
+
+average_rating_ranks%>%
+  group_by(average_rating_rank)%>%
+  summarise(n=n())%>%
+  ggplot(aes(x=factor(average_rating_rank),y=n))+
+  geom_col(
+    color="black",
+    size=0.5,
+    fill="mediumpurple",
+    outlier.colour = "tomato"
+  )+
+  theme_classic()+
+  geom_text(aes(label = n,vjust=-0.2))+
+  labs(
+    title = "Distribution of Average Rating rank",
+    caption = "Figure 25",
+    x = "Average Rating rank",
+    y = "count"
+  )+
+theme(plot.title = element_text(face = "bold"))
+
+average_rating_ranks%>%write.csv("average_rating_ranks.csv")
+```
